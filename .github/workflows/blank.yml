@@ -1,0 +1,119 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+library(readxl)
+data=read_excel("dslnb.xlsx")
+data=read_excel("RLND_meta analysis test.xlsx")
+
+library(mada)
+library(bamdit)
+library(rjags)
+
+
+library(rjags)
+
+as.numeric = data
+madad(data)
+
+summary(data[,2])
+hist((data[,2]))
+
+madad(data, level = 0.95)
+
+forest(madad(data), type = "sens")
+
+
+rs
+forest(madad(data), type = "spec")
+forest(madauni(data))
+madauni(data, level = 0.975)
+rs <- rowSums(data)
+
+
+madauni(data,method="MH",comb.fixed=F,comb.random=T)
+
+
+#### Bayes for all
+glas
+class(data_bayes)
+
+show(data_bayes)
+plotdata(data_bayes)
+
+data_bayes=data_bayes[-21,]
+glas.m1 <- metadiag(data_bayes, re = "normal", re.model = "DS",
+                     link = "logit", sd.Fisher.rho = 1.7, nr.burnin = 1000,
+                     nr.iterations = 1000, nr.chains = 4, r2jags = TRUE)
+summary(glas.m1, digits = 3)
+library("R2jags")
+attach.jags(glas.m1)
+cor(se.pool, sp.pool)
+
+glas
+plot(glas.m1, level = c(0.5, 0.75, 0.95), parametric.smooth = TRUE)
+plotsesp(glas.m1)
+bsroc(glas.m1)
+bsroc(glas.m1, level = c(0.025, 0.5, 0.975), plot.post.bauc = TRUE,
+       fpr.x = seq(0.01, 0.75, 0.01), lower.auc = 0.01, upper.auc = 0.75,
+       partial.AUC = FALSE)
+
+
+
+
+#### RLND Bayes 
+
+library(readxl)
+data=read_excel("rlnd.xlsx")
+
+show(rlnd)
+
+library(bamdit)
+
+data=as.data.frame(data)
+
+colnames(data)=c("tp","n1","fp","n2")
+class(data)
+head(data)
+show(data)
+
+plotdata(data)
+
+analysis <- metadiag(data = data, re = "normal", re.model = "DS", nr.iterations = 10000)
+
+
+summary(analysis)
+
+
+datasetrlnd <- metadiag(data, re = "normal", re.model = "DS",
+                    link = "logit", sd.Fisher.rho = 1.7, nr.burnin = 1000,
+                    nr.iterations = 1000, nr.chains = 4, r2jags = TRUE)
+
+summary(data)
+
+
+
+library("R2jags")
+attach.jags(analysis)
+cor(se.pool, sp.pool)
+
+
+plot(analysis, level = c(0.5, 0.75, 0.95), parametric.smooth = TRUE)
+plotsesp(analysis)
+bsroc(analysis)
+bsroc(analysis, level = c(0.025, 0.5, 0.975), plot.post.bauc = TRUE,
+      fpr.x = seq(0.01, 0.75, 0.01), lower.auc = 0.01, upper.auc = 0.75,
+      partial.AUC = FALSE)
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Run a one-line script
+      run: echo Hello, world!
+    - name: Run a multi-line script
+      run: |
+        echo Add other actions to build,
+        echo test, and deploy your project.
